@@ -12,7 +12,9 @@ class EmailListController extends Controller
      */
     public function index()
     {
-        return view('email-list.index');
+        return view('email-list.index',[
+            'emailLists' => EmailList::query()->paginate()
+        ]);
     }
 
     /**

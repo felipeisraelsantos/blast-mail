@@ -26,7 +26,8 @@ class EmailListController extends Controller
             fn( Builder $query ) => $query
             ->where('title' , 'like', "%$search%")
             ->orWhere('id', '=', $search)
-        )->paginate(5);
+        )->paginate(5)
+        ->appends(compact('search'));
 
         return view('email-list.index', [
             'emailLists' => $emailLists,

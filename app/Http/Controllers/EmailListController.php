@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EmailList;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EmailListController extends Controller
 {
@@ -12,7 +13,7 @@ class EmailListController extends Controller
      */
     public function index()
     {
-        return view('email-list.index',[
+        return view('email-list.index', [
             'emailLists' => EmailList::query()->paginate()
         ]);
     }
@@ -39,7 +40,7 @@ class EmailListController extends Controller
         $fileHandle = fopen($file->getRealPath(), 'r');
         $items = [];
 
-        while(($row = fgetcsv($fileHandle, null, ',')) !== false){
+        while (($row = fgetcsv($fileHandle, null, ',')) !== false) {
             if ($row[0] == 'name' && $row[1] == 'email') {
                 continue;
             }
@@ -52,10 +53,13 @@ class EmailListController extends Controller
 
         fclose($fileHandle);
 
-        $emailList = EmailList::query()->create([
-            'title' => $request->title
-        ]);
-        $emailList->subscribers()->createMany($items);
+        DB::transaction(function () use ($request, $items) {
+            $emailList = EmailList::query()->create([
+                'title' => $request->title
+            ]);
+
+            $emailList->subscribers()->createMany($items);
+        });
 
         return to_route('email-list.index');
     }

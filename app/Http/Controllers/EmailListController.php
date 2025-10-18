@@ -21,6 +21,7 @@ class EmailListController extends Controller
         // dd($search);
 
         $emailLists = EmailList::query()
+        ->withCount('subscribers')
         ->when(
             $search,
             fn( Builder $query ) => $query

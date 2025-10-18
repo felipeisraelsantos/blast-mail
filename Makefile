@@ -92,6 +92,9 @@ config-cache:
 route-list:
 	docker-compose exec $(APP_SERVICE) php artisan route:list -v
 
+factory:
+	docker-compose exec $(APP_SERVICE) php artisan make:factory
+
 # Comandos de Composer
 composer:
 	docker-compose exec $(APP_SERVICE) composer require ${require} --dev

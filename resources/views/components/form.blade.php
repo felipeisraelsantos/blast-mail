@@ -5,8 +5,11 @@
 @endphp
 
 {{-- <form {{ $attributes->class(['flex flex-col gap-4']) }} action="{{ $route }}" method="{{ $method }}" class="space-y-2"> --}}
-<form {{ $attributes->class(['flex flex-col gap-4']) }} method="{{ $method }}" >
-    @csrf
+<form {{ $attributes->class(['flex flex-col gap-4']) }} method="{{ $method }}">
+
+    @if ($method != 'get')
+        @csrf
+    @endif
 
     @if ($put)
         @method('put')

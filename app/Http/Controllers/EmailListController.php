@@ -18,8 +18,6 @@ class EmailListController extends Controller
 
         $search = request()->search;
 
-        // dd($search);
-
         $emailLists = EmailList::query()
         ->withCount('subscribers')
         ->when(

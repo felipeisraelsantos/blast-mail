@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmailList;
+use App\Models\Subscriber;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -11,10 +12,12 @@ class SubscriberController extends Controller
     public function index(EmailList $emailList)
     {
         $search = request()->search;
+        $showTrash = request()->get('showTrash', false);
 
         return view('subscriber.index',[
             'subscribers' => $emailList->subscribers()
             // ->with('emailList')
+            ->when($showTrash, fn(Builder $query) => $query->withTrashed())
              ->when(
                 $search,
                 fn( Builder $query ) => $query
@@ -24,7 +27,15 @@ class SubscriberController extends Controller
             )
             ->paginate(5),
             'emailList' => $emailList,
-            'search' => $search
+            'search' => $search,
+            'showTrash' => $showTrash,
         ]);
+    }
+
+    public function destroy(mixed $list, Subscriber $subscriber)
+    {
+        $subscriber->delete();
+
+        return back()->with('message', __('Subscriber deleted from the list !'));
     }
 }

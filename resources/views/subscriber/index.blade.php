@@ -9,19 +9,15 @@
         {{-- @unless ($subscribers->isEmpty() && blank($search)) --}}
         <div class="flex justify-between">
 
-            <x-link-button :href="route('subscribers.create', $emailList)">
+            <x-button.link :href="route('subscribers.create', $emailList)">
                 {{ __('Add a new subscriber') }}
             </x-link-button>
 
-            <x-form :action="route('subscribers.index', $emailList)" class="w-2/5" x-data x-ref="form">
-                <label for="show_trash" class="inline-flex items-center">
-                    <input id="show_trash" type="checkbox" value="1" @click="$refs.form.submit()"
-                        @if ($showTrash) checked @endif
-                        class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800"
-                        name="showTrash">
-                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Show Deleted Records') }}</span>
-                </label>
-                <x-text-input name="search" :value="$search" :placehlder="__('Search')" />
+            <x-form :action="route('subscribers.index', $emailList)" class="w-3/5 flex space-x-4 items-center" x-data x-ref="form" flat>
+                <x-input.checkbox value="1" name="showTrash" :label="__('Show Deleted Records')" @click="$refs.form.submit()"
+                    :checked="$showTrash" />
+
+                <x-input.text name="search" :value="$search" :placeholder="__('Search')" class="w-full"/>
             </x-form>
 
         </div>
@@ -37,21 +33,10 @@
                             @unless ($subscriber->trashed())
                                 <x-form :action="route('subscribers.destroy', [$emailList, $subscriber])" delete flat
                                     onsubmit="return confirm('{{ __('Are you sure ?') }}')">
-                                    <x-secondary-button type="submit">Delete</x-secondary-button>
+                                    <x-button.secondary type="submit">Delete</x-button.secondary>
                                 </x-form>
                             @else
-                                <span
-                                    class="w-fit inline-flex overflow-hidden rounded-sm border border-red-500 bg-white text-xs font-medium text-red-500 dark:border-red-500 dark:bg-neutral-950 dark:text-red-500">
-                                    <span class="flex items-center gap-1 bg-red-500/10 px-2 py-1 dark:bg-red-500/10">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
-                                            fill="currentColor" class="size-4">
-                                            <path fill-rule="evenodd"
-                                                d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                        Deleted
-                                    </span>
-                                </span>
+                                <x-badge danger>{{ __('Deleted') }}</x-badge>
                             @endunless
                         </x-table.td>
                     </tr>

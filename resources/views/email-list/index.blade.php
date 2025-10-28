@@ -9,12 +9,12 @@
         @unless ($emailLists->isEmpty() && blank($search))
             <div class="flex justify-between">
 
-                <x-link-button :href="route('email-list.create')">
+                <x-button.link :href="route('email-list.create')">
                     {{ __('Create a new email list') }}
                 </x-link-button>
 
                 <x-form :action="route('email-list.index')" class="w-2/5">
-                    <x-text-input name="search" :value="$search" :placehlder="__('Search')" />
+                    <x-input.text name="search" :value="$search" :placehlder="__('Search')" />
                 </x-form>
 
             </div>
@@ -26,7 +26,7 @@
                             <x-table.td class="p-4">{{ $list->title }}</x-table.td>
                             <x-table.td class="p-4">{{ $list->subscribers_count }}</x-table.td>
                             <x-table.td class="p-4">
-                                <x-link-button :href="route('subscribers.index', $list)" >
+                                <x-button.link :href="route('subscribers.index', $list)" >
                                     Subscribers
                                 </x-link-button>
                             </x-table.td>
@@ -37,7 +37,7 @@
             {{ $emailLists->links()}}
         @else
             <div class="flex justify-center">
-                <x-link-button :href="route('email-list.create')">
+                <x-button.link :href="route('email-list.create')">
                     {{ __('Create your first email list') }}
                 </x-link-button>
             </div>

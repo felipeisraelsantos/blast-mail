@@ -12,7 +12,7 @@ class CampaignController extends Controller
         $search = request()->search;
         $withTrashed = request()->get('withTrashed', false);
 
-        return view('campaign.index', [
+        return view('campaigns.index', [
             'campaigns' => Campaign::query()
                 ->when(
                     $withTrashed,

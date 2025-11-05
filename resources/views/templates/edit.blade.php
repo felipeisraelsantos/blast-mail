@@ -6,7 +6,7 @@
     </x-slot>
 
     <x-card>
-        <x-form :action="route('template.update', $template)" put>
+        <x-form :action="route('templates.update', $template)" put>
 
             <div>
                 <x-input-label for="name" :value="__('Name')" />
@@ -21,7 +21,7 @@
             </div>
 
             <div class="flex items-center space-x-4">
-                <x-button.link secondary :href="route('template.index')">
+                <x-button.link secondary :href="route('templates.index')">
                     {{ __('cancel') }}
                 </x-button.link>
 

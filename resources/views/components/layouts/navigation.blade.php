@@ -16,7 +16,7 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('campaign.index')" :active="request()->routeIs('campaign.*')">
+                    <x-nav-link :href="route('campaigns.index')" :active="request()->routeIs('campaigns.*')">
                         {{ __('Campaigns') }}
                     </x-nav-link>
 
@@ -24,7 +24,7 @@
                         {{ __('Email List') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('template.index')" :active="request()->routeIs('template.*')">
+                    <x-nav-link :href="route('templates.index')" :active="request()->routeIs('templates.*')">
                         {{ __('Templates') }}
                     </x-nav-link>
                 </div>
@@ -91,7 +91,7 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('campaign.index')" :active="request()->routeIs('campaign.*')">
+            <x-responsive-nav-link :href="route('campaigns.index')" :active="request()->routeIs('campaigns.*')">
                 {{ __('Campaigns') }}
             </x-responsive-nav-link>
 
@@ -99,7 +99,7 @@
                 {{ __('Email List') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('template.index')" :active="request()->routeIs('mail-list.*')">
+            <x-responsive-nav-link :href="route('templates.index')" :active="request()->routeIs('mail-list.*')">
                 {{ __('Templates') }}
             </x-responsive-nav-link>
         </div>

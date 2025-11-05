@@ -6,7 +6,7 @@
 @endpush
 
 <div x-data="{
-    value: '{{ $value }}',
+    value: @js($value),
     init() {
         let quill = new Quill(this.$refs.quill, { theme: 'snow' });
         quill.root.innerHTML = this.value;

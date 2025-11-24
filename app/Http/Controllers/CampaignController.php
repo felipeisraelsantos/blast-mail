@@ -23,9 +23,23 @@ class CampaignController extends Controller
                     fn(Builder $query) => $query
                         ->where('name', 'like', "%$search%")->orWhere('id', '=', $search)
                 )
-                ->paginate(5),
+                ->paginate(5)
+                ->appends(compact('search', 'withTrashed')),
             'search' => $search,
             'withTrashed' => $withTrashed
         ]);
+    }
+
+    public function destroy( Campaign $campaign)
+    {
+        $campaign->delete();
+        return back()->with('message', __('Campaign successfully deleted'));
+    }
+
+    public function restore(Campaign $campaign)
+    {
+        $campaign = Campaign::query()->whereKey($campaign);
+        $campaign->restore();
+        return back()->with('message', __('Campaign successfully deleted'));
     }
 }

@@ -24,7 +24,8 @@ class TemplateController extends Controller
                     fn(Builder $query) => $query
                         ->where('name', 'like', "%$search%")->orWhere('id', '=', $search)
                 )
-                ->paginate(5),
+                ->paginate(5)
+                ->appends(compact('search', 'withTrashed')),
             'search' => $search,
             'withTrashed' => $withTrashed
         ]);

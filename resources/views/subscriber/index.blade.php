@@ -14,8 +14,8 @@
             </x-link-button>
 
             <x-form :action="route('subscribers.index', $emailList)" class="w-3/5 flex space-x-4 items-center" x-data x-ref="form" flat>
-                <x-input.checkbox value="1" name="showTrash" :label="__('Show Deleted Records')" @click="$refs.form.submit()"
-                    :checked="$showTrash" />
+                <x-input.checkbox value="1" name="withTrashed" :label="__('Show Deleted Records')" @click="$refs.form.submit()"
+                    :checked="$withTrashed" />
 
                 <x-input.text name="search" :value="$search" :placeholder="__('Search')" class="w-full"/>
             </x-form>

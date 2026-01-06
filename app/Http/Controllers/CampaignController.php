@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CampaignsStoreRequest;
 use App\Models\Campaign;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Session;
@@ -33,32 +34,40 @@ class CampaignController extends Controller
 
     public function create(?string $tab = null)
     {
-        // dump(Session::get('campaigns::create'));
-        return view('campaigns.create',[
+        // session()->forget('campaigns::create');
+        return view('campaigns.create', [
             'tab' => $tab,
             'form' => match ($tab) {
                 'template' => '_template',
                 'schedule' => '_schedule',
                 default => '_config'
-            }
+            },
+            'data' => session()->get('campaigns::create', [
+                'name' => null,
+                'subject' => null,
+                'email_list_id' => null,
+                'template_id' => null,
+                'body' => null,
+                'track_click' => null,
+                'track_open' => null,
+                'send_at' => null
+            ])
         ]);
     }
 
-    public function store(?string $tab = null)
+    public function store(CampaignsStoreRequest $request, ?string $tab = null)
     {
-        if (blank($tab)) {
-            $data = request()->validate([
-                'name' => 'required|max:255',
-                'subject' => 'required|max:40',
-                'email_list_id' => 'nullable',
-                'template_id' => 'nullable'
-            ]);
-            Session::put('campaigns::create', $data);
-            return to_route('campaigns.create',['tab' => 'template']);
+        $data = $request->getData();
+        $toRoute = $request->getToRoute();
+
+        if ($tab == 'schedule') {
+            Campaign::create($data);
         }
+
+        return response()->redirectTo($toRoute);
     }
 
-    public function destroy( Campaign $campaign)
+    public function destroy(Campaign $campaign)
     {
         $campaign->delete();
         return back()->with('message', __('Campaign successfully deleted'));

@@ -15,20 +15,21 @@ class SubscriberController extends Controller
         $search = request()->search;
         $withTrashed = request()->get('withTrashed', false);
 
-        return view('subscriber.index',[
-            'subscribers' => $emailList->subscribers()
-            // ->with('emailList')
-            ->when($withTrashed, fn(Builder $query) => $query->withTrashed())
-             ->when(
-                $search,
-                fn( Builder $query ) => $query
-                ->where('name' , 'like', "%$search%")
-                ->orWhere('email', 'like', "%$search%")
-                ->orWhere('id', '=', $search)
-            )
-            ->paginate(5)
-            ->appends(compact('search', 'withTrashed')),
+        return view('subscriber.index', [
             'emailList' => $emailList,
+            'subscribers' => $emailList
+                ->subscribers()
+                ->when($withTrashed, fn(Builder $query) => $query->withTrashed())
+                ->when(
+                    $search,
+                    fn(Builder $query) => $query
+                        ->where('name', 'like', "%$search%")
+                        ->orWhere('email', 'like', "%$search%")
+                        ->orWhere('like', '=', $search)
+                )
+                ->paginate(5)
+                ->appends(compact('search', 'withTrashed')),
+            // 'emailList' => $emailList,
             'search' => $search,
             'withTrashed' => $withTrashed,
         ]);
@@ -49,8 +50,8 @@ class SubscriberController extends Controller
     public function store(EmailList $emailList)
     {
         $data = request()->validate([
-            'name' => ['required','string','max:255'],
-            'email' => ['required','email', 'max:255',Rule::unique('subscribers')->where('email_list_id', $emailList->id)]
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', Rule::unique('subscribers')->where('email_list_id', $emailList->id)]
         ]);
 
         $emailList->subscribers()->create($data);

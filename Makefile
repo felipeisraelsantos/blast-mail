@@ -116,6 +116,17 @@ permissions:
 build:
 	npm install && npm run build
 
+mailpit-up:
+	docker run -d \
+		--restart unless-stopped \
+		--name=mailpit \
+		-p 8025:8025 \
+		-p 1025:1025 \
+		axllent/mailpit
+
+mailpit-down:
+	docker stop mailpit && docker rm mailpit
+
 help:
 	@echo "Comandos disponíveis:"
 	@echo ""

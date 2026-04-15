@@ -44,9 +44,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/campaigns/{campaign}/emails', function (Campaign $campaign) {
 
-        foreach ($campaign->emailList->subscribers as $subscriber) {
-            Mail::to($subscriber->email)->send(new EmailCampaign($campaign));
-        }
+       foreach ($campaign->emailList->subscribers as $subscriber) {
+                Mail::to($subscriber->email)
+                    ->later(
+                        $campaign->send_at,
+                        new EmailCampaign($campaign)
+                    );
+            }
 
         return (new EmailCampaign($campaign))->render();
     });

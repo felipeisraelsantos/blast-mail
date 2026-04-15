@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CampaignsStoreRequest;
+use App\Jobs\SendEmailCampaign;
 use App\Models\Campaign;
 use App\Models\EmailList;
 use App\Models\Template;
@@ -59,7 +60,7 @@ class CampaignController extends Controller
                 $this->when(
                     $tab == 'schedule',
                     fn() => [
-                        'countEmails'=> EmailList::find($data['email_list_id'])->subscribers()->count(),
+                        'countEmails' => EmailList::find($data['email_list_id'])->subscribers()->count(),
                         'template' => Template::find($data['template_id'])->name
                     ],
                     fn() => []
@@ -83,7 +84,8 @@ class CampaignController extends Controller
         $toRoute = $request->getToRoute();
 
         if ($tab == 'schedule') {
-            Campaign::create($data);
+            $campaign = Campaign::create($data);
+            SendEmailCampaign::dispatchAfterResponse($campaign);
         }
 
         return response()->redirectTo($toRoute);

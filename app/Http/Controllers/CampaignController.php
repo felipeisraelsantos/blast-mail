@@ -37,6 +37,12 @@ class CampaignController extends Controller
         ]);
     }
 
+    public function show(Campaign $campaign, string $what)
+    {
+        abort_unless(in_array($what, ['statistics', 'open', 'clicked']), 404);
+        return view("campaigns.show.{$what}");
+    }
+
     public function create(?string $tab = null)
     {
         $data = session()->get('campaigns::create', [

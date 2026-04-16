@@ -24,7 +24,11 @@
                 @foreach ($campaigns as $campaign)
                     <tr>
                         <x-table.td class="w-1">{{ $campaign->id }}</x-table.td>
-                        <x-table.td>{{ $campaign->name }}</x-table.td>
+                        <x-table.td>
+                            <a href="{{ route('campaigns.show', $campaign) }}" class="hover:underline">
+                                {{ $campaign->name }}
+                            </a>
+                        </x-table.td>
                         <x-table.td class="w-1">
                             <div class="flex items-center space-x-4">
                                 {{-- <x-button.link secondary :href="route('campaigns.show', $campaign)">{{ __('Preview') }}</x-button.link>

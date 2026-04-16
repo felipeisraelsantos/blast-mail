@@ -37,10 +37,14 @@ class CampaignController extends Controller
         ]);
     }
 
-    public function show(Campaign $campaign, string $what)
+    public function show(Campaign $campaign, ?string $what = null)
     {
+         if (is_null($what)) {
+            return to_route('campaigns.show', ['campaign' => $campaign, 'what' => 'statistics']);
+        }
+
         abort_unless(in_array($what, ['statistics', 'open', 'clicked']), 404);
-        return view("campaigns.show.{$what}");
+        return view('campaigns.show', compact('campaign', 'what'));
     }
 
     public function create(?string $tab = null)

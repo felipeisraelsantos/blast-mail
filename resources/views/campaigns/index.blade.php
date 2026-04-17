@@ -10,7 +10,7 @@
 
             <x-button.link :href="route('campaigns.create')">
                 {{ __('Create a new campaig') }}
-                </x-link-button>
+                </x-button.link>
 
                 <x-form :action="route('campaigns.index')" class="w-3/5 flex space-x-4 items-center" x-data x-ref="form" flat>
                     <x-input.checkbox value="1" name="withTrashed" :label="__('Show Deleted Records')" @click="$refs.form.submit()"

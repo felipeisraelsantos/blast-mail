@@ -4,12 +4,14 @@ namespace App\Jobs;
 
 use App\Mail\EmailCampaign;
 use App\Models\Campaign;
+use App\Models\CampaignMail;
+use App\Models\Subscriber;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class SendEmailCampaign implements ShouldQueue
+class SendEmailsCampaign implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -17,7 +19,8 @@ class SendEmailCampaign implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        public Campaign $campaign
+        public Campaign $campaign,
+        public Subscriber $subscriber
     ) {
         //
     }
@@ -28,6 +31,12 @@ class SendEmailCampaign implements ShouldQueue
     public function handle(): void
     {
         foreach ($this->campaign->emailList->subscribers as $subscriber) {
+            CampaignMail::query()
+                ->create([
+                    'campaign_id' => $this->campaign->id,
+                    'subscriber_id' => $this->subscriber->id,
+                    'sent_at' => $this->campaign->sent_at,
+                ]);
             Mail::to($subscriber->email)
                 ->later(
                     $this->campaign->send_at,

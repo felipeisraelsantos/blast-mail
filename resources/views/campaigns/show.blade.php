@@ -5,9 +5,9 @@
 
     <x-card>
 
-        <div>
+        {{-- <div>
             {{ $campaign->description }}
-        </div>
+        </div> --}}
 
         <x-tabs :tabs="[
             __('Statistics') => route('campaigns.show', ['campaign' => $campaign->id, 'what' => 'statistics']),

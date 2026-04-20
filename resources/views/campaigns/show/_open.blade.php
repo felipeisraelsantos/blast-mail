@@ -12,6 +12,4 @@
         </x-slot>
     </x-table>
     {{-- {{ $campaigns->links() }} --}}
-
-    4:23
 </div>

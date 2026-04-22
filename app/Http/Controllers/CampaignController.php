@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CampaignShowRequest;
 use App\Http\Requests\CampaignsStoreRequest;
-use App\Jobs\SendEmailCampaign;
+use App\Jobs\SendEmailsCampaign;
 use App\Models\Campaign;
 use App\Models\EmailList;
 use App\Models\Template;
@@ -96,7 +96,7 @@ class CampaignController extends Controller
 
         if ($tab == 'schedule') {
             $campaign = Campaign::create($data);
-            SendEmailCampaign::dispatchAfterResponse($campaign);
+            SendEmailsCampaign::dispatchAfterResponse($campaign);
         }
 
         return response()->redirectTo($toRoute);

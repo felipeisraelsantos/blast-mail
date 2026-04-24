@@ -60,8 +60,6 @@ class CampaignController extends Controller
             ->simplePaginate(5)
             ->withQueryString();
 
-            dd($query);
-
         return view('campaigns.show', compact('campaign', 'what', 'search', 'query'));
     }
 

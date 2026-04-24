@@ -1,15 +1,17 @@
 <div class="space-y-4">
     <x-form class="flex justify-end" action="{{ route('campaigns.show', compact('campaign', 'what')) }}" get>
-        <x-input.text  name="search" placeholder="{{ __('Search an email ...') }}" value="{{ $search }}"/>
+        <x-input.text name="search" placeholder="{{ __('Search an email ...') }}" value="{{ $search }}" />
     </x-form>
     <x-table :headers="[__('Name'), __('# Openings'), __('Email')]">
         <x-slot name="body">
-            <tr>
-                <x-table.td>Felipe</x-table.td>
-                <x-table.td>2</x-table.td>
-                <x-table.td>teste@teste.com</x-table.td>
-            </tr>
+            @foreach ($query as $item)
+                <tr>
+                    <x-table.td>{{ $item->subscriber->name }}</x-table.td>
+                    <x-table.td>{{ $item->openings }}</x-table.td>
+                    <x-table.td>{{ $item->subscriber->email }}</x-table.td>
+                </tr>
+            @endforeach
         </x-slot>
     </x-table>
-    {{-- {{ $campaigns->links() }} --}}
+    {{ $query->links() }}
 </div>

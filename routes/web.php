@@ -26,6 +26,7 @@ Route::get('/email', function() {
 });
 
 Route::get('/t/{mail}/o', [TrackingController::class, 'openings'])->name('tracking.openings');
+Route::get('/t/{mail}/c', [TrackingController::class, 'clicks'])->name('tracking.clicks');
 
 Route::get('/', function () {
     Auth::loginUsingId(1);

@@ -13,26 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/email', function() {
-    $campaign = Campaign::find(11);
-
-    $mail = $campaign->mails()->first();
-
-    $email = new EmailCampaign($campaign, $mail);
-
-    // SendEmailsCampaignJob::dispatchAfterResponse($campaign);
-
-    return $email->render();
-});
-
 Route::get('/t/{mail}/o', [TrackingController::class, 'openings'])->name('tracking.openings');
 Route::get('/t/{mail}/c', [TrackingController::class, 'clicks'])->name('tracking.clicks');
-
-Route::get('/', function () {
-    Auth::loginUsingId(1);
-
-    return to_route('dashboard');
-});
 
 Route::view('/dashboard', 'dashboard')->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -54,9 +36,10 @@ Route::middleware('auth')->group(function () {
     //endregion
 
     Route::resource('templates', TemplateController::class);
+    Route::redirect('/dashboard', '/campaigns');
 
     //region Campaigns
-    Route::get('/campaigns', [CampaignController::class, 'index'])->name('campaigns.index');
+    Route::get('/', [CampaignController::class, 'index'])->name('campaigns.index');
 
     Route::get('/campaigns/create/{tab?}', [CampaignController::class, 'create'])->middleware(CampaignCreateSessionControl::class)->name('campaigns.create');
     Route::post('/campaigns/create/{tab?}', [CampaignController::class, 'store']);

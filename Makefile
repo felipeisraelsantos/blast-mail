@@ -127,6 +127,13 @@ mailpit-up:
 mailpit-down:
 	docker stop mailpit && docker rm mailpit
 
+phpunit:
+	@if [ -n "$(test)" ]; then \
+		docker-compose exec $(APP_SERVICE) php artisan test --filter "$(test)"; \
+	else \
+		docker-compose exec $(APP_SERVICE) php artisan test; \
+	fi
+
 help:
 	@echo "Comandos disponíveis:"
 	@echo ""

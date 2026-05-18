@@ -1,7 +1,8 @@
 <?php
+use App\Models\User;
 
-it('returns a successful response', function () {
-    $response = $this->get('/');
+it('returns 200 when authenticated', function () {
+    $user = User::factory()->create();
 
-    $response->assertStatus(200);
+    $this->actingAs($user)->get('/')->assertOk();
 });
